@@ -18,28 +18,28 @@ This library works on both **32-bit and 64-bit** applications.
 ## Usage
 
 ```cpp
-writeMemory<uint32_t>(0xDEADBEEF, 3000); // Writes 
+writeMemory<uint32_t>(0xDEADBEEF, 3000); // Writes 3000 (wrapped to uint32_t) to the given address
 ```
 ```cpp
-readMemory<float>(0xBAADF00D);
+readMemory<float>(0xBAADF00D); // Reads the value at the given address and returns a float
 ```
 ```cpp
-makeNOP(0xFEEDFACE, 5); // Writes 5 NOP's from the given address
+makeNOP(0xFEEDFACE, 5); // Writes 5 NOPs at the given address
 ```
 ```cpp
-makeJMP(0xCAFEBABE, MyDetour); // 'MyDetour' is a function here
+makeJMP(0xCAFEBABE, MyDetour); // Creates a jump at the given address to 'MyDetour' (function)
 ```
 ```cpp
-makeCALL(0xBAADC0DE, MyHook); // 'MyHook' is a function here
+makeCALL(0xBAADC0DE, MyHook); // Creates a call at the given address to 'MyHook' (function)
 ```
 ```cpp
-makeRET(0xDEAD10CC, 4); // Writes 'ret 4' from the given addres
+makeRET(0xDEAD10CC, 4); // Writes 'ret 4' at the given addres
 ```
 ```cpp
-makeINT3(0x00C0FFEE, 4); // Writes 4 'INT 3' from the given addres
+makeINT3(0x00C0FFEE, 4); // Writes 4 'INT 3' at the given addres
 ```
 ```cpp
-fillNOPs(0xCAFED00D, 0xDEADBABE); // Writes 'ret 4' from the given addres
+fillNOPs(0xCAFED00D, 0xDEADBABE); // Fills the memory region between two addresses with NOP instructions
 ```
 ## Credits
 - **Kevin4e** - Author of the library.
