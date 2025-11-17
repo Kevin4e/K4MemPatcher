@@ -7,8 +7,9 @@ K4MemPatcher is a **header-only, Windows-specific** library that performs in-pro
 It allows you to:
 - Write arbitrary bytes to memory
 - Fill regions with NOPs or INT3 instructions
-- Create relative JMP and CALL instructions
-- Safely modify memory protections with `VirtualProtect`
+- Create JMP and CALL instructions
+- Backup bytes
+- …and additional utilities
 
 This library works on both **32-bit and 64-bit** applications.
 
@@ -138,7 +139,7 @@ Parameters:
 - `addressEnd`: last address to write **NOP**s to.
 - `inclusive`: whether **NOP** should be written at `addressEnd` or not.
 ```cpp
-fillNOPs(0xCAFED00D, 0xDEADBABE); // Fills the memory region between two addresses with NOP instructions
+fillNOPs(0xCAFED00D, 0xDEADBABE); // Fills the memory region between the two addresses with NOP instructions
 ```
 
 ---
