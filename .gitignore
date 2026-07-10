@@ -33,3 +33,7 @@
 
 # Visual Studio auto-generated folder
 .vs/
+
+# Others
+ARCHIVE/
+sln/
