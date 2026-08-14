@@ -253,7 +253,7 @@ Example usage:
 writeMemory<uint32_t>(0xDEADBEEF, 3000, false, false); // Writes 3000 (no memory validation nor I-cache flushing)
 writeMemory<uint8_t>(0xE004D3D3, 0x9C, false, true); // Writes 0x9C (PUSHFQ) with I-cache flushing (no memory validation)
 
-if (writeMemory<uint32_t>(0xB40DI000, 1500, true, false) != Result::Success) { // Writes 1500 with memory validation (no I-cache flushing)
+if (writeMemory<uint32_t>(0xB40D1000, 1500, true, false) != Result::Success) { // Writes 1500 with memory validation (no I-cache flushing)
 	/* ... */
 }
 
@@ -747,7 +747,7 @@ Possible exit codes:
 
 Example usage:
 ```cpp
-makeLOOP<LoopCondition::CX>(0x1000, 0x1010, false); // LOOP to 0x1010 
+makeLOOP<LoopCondition::CX>(0x1000, 0x1010, false); // LOOP to 0x1010 (no memory validation)
 
 if (makeLOOP<LoopCondition::NotEqaual>(0x2000, 0x3000, true) != Result::Success) { // LOOPNE to 0x3000 with memory validation
 	/* ... */
@@ -868,7 +868,7 @@ Example usage:
 ```cpp
 swapBytes(0x00500000, 0x00950000, 10, false); // Swaps 10 bytes (no memory validation)
 
-if (swapBytes(0x00380000, 0x00850000, 15, true)) { // Swaps 15 bytes with memory validation
+if (!swapBytes(0x00380000, 0x00850000, 15, true)) { // Swaps 15 bytes with memory validation
 	/* ... */
 }
 ```
@@ -893,7 +893,12 @@ Range range2(0x00100200, 0x00100250);
 
 swapRangedBytes(range1, range2, false); // Swaps ranges (no memory validation)
 
-Range range3(0x00200000
+Range range3(0x00200000, 0x00200400);
+Range range4(0x00300050, 0x00304000);
+
+if (!swapRangedBytes(range3, range4, true)) { // Swaps ranges with memory validation
+	/* ... */
+}
 ```
 
 ---
@@ -910,7 +915,7 @@ inline Address findPattern(const std::string& pattern, ModuleName moduleName);
 ```
 
 Parameters:
-- `pattern`: Pattern string (e.g., "8B 0D ?? ?? ?? ?? 29 48 10").
+- `pattern`: Pattern string (e.g. "8B 0D ?? ?? ?? ?? 29 48 10").
 - `moduleName`: Name of the module in which to search for the pattern (`nullptr` by default).
 
 Example usage:
@@ -932,7 +937,7 @@ inline Addresses findPatterns(const std::string& pattern, ModuleName moduleName,
 ```
 
 Parameters:
-- `pattern`: Pattern string (e.g., "8B 0D ?? ?? ?? ?? 29 48 10").
+- `pattern`: Pattern string (e.g. "8B 0D ?? ?? ?? ?? 29 48 10").
 - `moduleName`: Name of the module in which to search for the pattern (`nullptr` by default).
 - `firstNPatterns`: Maximum number of matching pattern addresses to return (`Limit::max<Size>` by default).
 
@@ -980,7 +985,7 @@ Parameters:
 
 Example usage:
 ```cpp
-Addresses addresses = { 0x3ACD71B0, 0xAB3D91CE, 0x021DBA14 };
+Addresses addresses = { 0x3ACD71B0, 0xAB3D91CE, 0x201DBA14 };
 std::vector<BranchInfo> branches = resolveBranches(addresses);
 
 if (std::any_of(branches.begin(), branches.end(), [](const BranchInfo& branch)
@@ -1135,13 +1140,13 @@ if (retFuncs1.empty()) { // No ret function was found
 	/* ... */
 }
 
-Addresses retFuncs2 = findRetFunctions(nullptr, true); Looks for all the ret functions with sorting
+Addresses retFuncs2 = findRetFunctions(nullptr, true); // Looks for all the ret functions with sorting
 
 if (retFuncs2.empty()) { // No ret function was found
 	/* ... */
 }
 
-Addresses retFuncs3 = findRetFunctions(nullptr, false, 15); Looks for the first 15 ret functions (no sorting)
+Addresses retFuncs3 = findRetFunctions(nullptr, false, 15); // Looks for the first 15 ret functions (no sorting)
 
 if (retFuncs3.empty()) { // No ret function was found
 	/* ... */
@@ -1156,4 +1161,4 @@ if (retFuncs3.empty()) { // No ret function was found
 
 ## Credits
 
-- **Kevin4e** - Author of the library.
+- **[Kevin4e](https://github.com/Kevin4e/)** - Author of the library
